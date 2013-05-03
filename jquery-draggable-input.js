@@ -16,7 +16,7 @@ $(function() {
         type: 'integer',
         min: 0,
         max: -1,
-        scrollPrecision: 1,
+        scrollPrecision: 0.3,
         precision: 2
       };
 
