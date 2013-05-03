@@ -12,7 +12,6 @@ $(function() {
 
     draggableInput: function(_options) {
 
-      // Default options
       var defaults = {
         type: 'integer',
         min: 0,
@@ -39,7 +38,6 @@ $(function() {
 
         // Parse options correctly
         var value = parse($el.val());
-        var scrollPrecision = parse(options.scrollPrecision);
         var precision = parseInt(options.precision);
         var max = parse(options.max);
         var min = parse(options.min);
@@ -61,7 +59,7 @@ $(function() {
           var onMouseMove = function(e) {
 
             var deltaY = e.pageY - initialPos.y;
-            var newValue = value - deltaY * scrollPrecision;
+            var newValue = value - deltaY * options.scrollPrecision;
 
             // Boundaries
             newValue = checkBoundaries(newValue);
@@ -81,15 +79,16 @@ $(function() {
         });
 
         $(this).blur(function(e){
+
           var currentValue = $(this).val();
           var newValue = checkBoundaries(currentValue);
-
           newValue = checkPrecision(newValue);
 
           if (currentValue != newValue){
             $(this).val(newValue).trigger('change');
           }
-        });
+
+        });
 
       });
     }
