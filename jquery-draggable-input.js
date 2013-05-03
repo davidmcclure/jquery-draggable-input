@@ -11,6 +11,7 @@ $(function() {
   $.fn.extend({
 
     draggableInput: function(_options) {
+
       // Default options
       var defaults = {
         type: 'integer',
@@ -19,19 +20,22 @@ $(function() {
         scrollPrecision: 1,
         precision: 2
       };
+
       // Merge defaults with input options
       var options = $.extend(defaults, _options);
 
       // Get started
       return this.each(function() {
-        if(this.nodeName.toLowerCase() != 'input')
-          throw new Error('jquery-draggable-input: The given node is not an <input> tag.');
+
+        if (this.nodeName.toLowerCase() != 'input') {
+          throw new Error('The node is not an <input> tag.');
+        }
 
         var $el = $(this);
 
         var parse;
-        if(options.type === 'integer') parse = parseInt;
-        if(options.type === 'float') parse = parseFloat;
+        if (options.type === 'integer') parse = parseInt;
+        if (options.type === 'float') parse = parseFloat;
 
         // Parse options correctly
         var value = parse($el.val());
@@ -45,7 +49,7 @@ $(function() {
         };
 
         var checkPrecision = function(newValue){
-          if(options.type === 'float')
+          if (options.type === 'float')
             newValue = newValue.toFixed(options.precision);
           return newValue;
         };
@@ -55,16 +59,17 @@ $(function() {
           var initialPos = { x: e.pageX, y: e.pageY };
 
           var onMouseMove = function(e) {
-            var diffPos = { x: e.pageX - initialPos.x, y: e.pageY - initialPos.y };
-            var newValue = value - diffPos.y * scrollPrecision;
+
+            var deltaY = e.pageY - initialPos.y;
+            var newValue = value - deltaY * scrollPrecision;
 
             // Boundaries
             newValue = checkBoundaries(newValue);
 
             // Decimal precision
             newValue = checkPrecision(newValue);
-            
             $el.val(newValue).trigger('change');
+
           };
 
           $(document).mousemove(onMouseMove);
@@ -81,7 +86,7 @@ $(function() {
 
           newValue = checkPrecision(newValue);
 
-          if(currentValue != newValue){
+          if (currentValue != newValue){
             $(this).val(newValue).trigger('change');
           }
         });
